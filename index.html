@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minit – あなたの日常を、やさしくする場所。</title>
+  <meta name="description" content="Minitがつくる、あなたの日常をやさしくする個人開発アプリたち。CozyPost・MinitStretchなど。" />
+
+  <!-- OGP -->
+  <meta property="og:title" content="Minit – あなたの日常を、やさしくする場所。" />
+  <meta property="og:description" content="あなたの日常をやさしくする個人開発アプリたち。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mimitday.github.io/" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Zen+Kaku+Gothic+New:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      --cream:   #fdf6ee;
+      --paper:   #f7ede0;
+      --sand:    #e8d9c5;
+      --terra:   #c97a5c;
+      --terra-d: #a55e42;
+      --sage:    #7a9e8a;
+      --sage-l:  #b3cdbf;
+      --ink:     #2e2620;
+      --muted:   #7a6a5a;
+      --white:   #ffffff;
+
+      --radius-card: 18px;
+      --radius-btn:  50px;
+      --shadow-soft: 0 4px 24px rgba(80,50,30,.10);
+      --shadow-card: 0 8px 40px rgba(80,50,30,.12);
+    }
+
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── Noise texture overlay ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Layout wrapper ─── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ════════════════════════════════
+       HERO
+    ════════════════════════════════ */
+    .hero {
+      padding: 72px 0 56px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--terra);
+      background: rgba(201,122,92,.10);
+      border: 1px solid rgba(201,122,92,.25);
+      border-radius: 50px;
+      padding: 4px 16px;
+      margin-bottom: 24px;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 7vw, 4rem);
+      line-height: 1.15;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      animation: fadeUp .7s .08s ease both;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--terra);
+    }
+    /* やさしく の色変え（斜体なし） */
+    .accent-soft {
+      font-style: normal;
+      color: var(--sage);
+    }
+    /* Minit ロゴ */
+    .hero-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      animation: fadeUp .5s ease both;
+    }
+    .hero-logo svg {
+      width: clamp(120px, 30vw, 180px);
+      height: auto;
+      overflow: visible;
+    }
+    .hero-sub {
+      margin-top: 18px;
+      font-size: clamp(.88rem, 2.4vw, 1.05rem);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeUp .7s .16s ease both;
+    }
+
+    /* 波形セパレータ */
+    .wave {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      margin-top: 48px;
+    }
+    .wave svg { display: block; width: 100%; }
+
+    /* ════════════════════════════════
+       ABOUT
+    ════════════════════════════════ */
+    .about-section {
+      background: var(--paper);
+      padding: 56px 0 48px;
+    }
+    .section-label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 12px;
+    }
+    .about-text {
+      font-size: clamp(.9rem, 2.5vw, 1.05rem);
+      color: var(--muted);
+      max-width: 560px;
+      font-weight: 300;
+    }
+    .about-text strong { color: var(--ink); font-weight: 700; }
+
+    /* ════════════════════════════════
+       APPS GRID
+    ════════════════════════════════ */
+    .apps-section {
+      padding: 64px 0 72px;
+    }
+    .section-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      color: var(--ink);
+      margin-bottom: 36px;
+    }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    /* ── App Card ── */
+    .app-card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .25s ease, box-shadow .25s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .app-card.visible {
+      animation: fadeUp .6s ease forwards;
+    }
+    .app-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 56px rgba(80,50,30,.16);
+    }
+
+    .card-accent {
+      height: 6px;
+    }
+    .card-accent.cozy    { background: linear-gradient(90deg, #7a9e8a, #b3cdbf); }
+    .card-accent.stretch { background: linear-gradient(90deg, #c97a5c, #e8b99e); }
+
+    .card-body {
+      padding: 28px 28px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+    .card-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .card-name-sub {
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-bottom: 14px;
+    }
+    .card-desc {
+      font-size: .9rem;
+      color: var(--muted);
+      font-weight: 300;
+      flex: 1;
+      line-height: 1.75;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 18px;
+    }
+    .tag {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      border-radius: 50px;
+      padding: 3px 12px;
+      background: var(--paper);
+      color: var(--muted);
+    }
+    .tag.green  { background: rgba(122,158,138,.15); color: var(--sage); }
+    .tag.terra  { background: rgba(201,122,92,.12);  color: var(--terra); }
+
+    .card-footer {
+      padding: 0 28px 24px;
+    }
+    .btn-visit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .85rem;
+      font-weight: 700;
+      border-radius: var(--radius-btn);
+      padding: 10px 22px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-visit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.12);
+    }
+    .btn-visit.green {
+      background: var(--sage);
+      color: var(--white);
+    }
+    .btn-visit.terra {
+      background: var(--terra);
+      color: var(--white);
+    }
+    .btn-arrow { font-size: 1rem; transition: transform .2s; }
+    .btn-visit:hover .btn-arrow { transform: translateX(3px); }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    .footer {
+      background: var(--ink);
+      color: var(--sand);
+      padding: 48px 0 36px;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .footer-tagline {
+      font-size: .82rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .footer-link {
+      font-size: .85rem;
+      color: var(--sand);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      opacity: .8;
+      transition: opacity .2s;
+    }
+    .footer-link:hover { opacity: 1; }
+    .footer-bottom {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      font-size: .75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .hero { padding: 56px 0 40px; }
+      .apps-grid { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; gap: 28px; }
+      .footer-links { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="wrap">
+
+    <!-- Minit ロゴ -->
+    <div class="hero-logo" aria-label="Minit">
+      <svg viewBox="0 0 180 52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minit logo">
+        <!-- ドット装飾 -->
+        <circle cx="6" cy="26" r="4" fill="#c97a5c" opacity=".9"/>
+        <circle cx="174" cy="26" r="4" fill="#7a9e8a" opacity=".9"/>
+        <!-- 細いアンダーライン -->
+        <line x1="14" y1="42" x2="166" y2="42" stroke="#e8d9c5" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Minit テキスト -->
+        <text
+          x="90" y="36"
+          font-family="'DM Serif Display', Georgia, serif"
+          font-size="34"
+          font-weight="400"
+          fill="#2e2620"
+          text-anchor="middle"
+          letter-spacing="2"
+        >Minit</text>
+        <!-- i のドットをテラコッタに差し替え（上書き） -->
+        <circle cx="90" cy="5" r="3.5" fill="#c97a5c"/>
+      </svg>
+    </div>
+
+    <span class="hero-badge">personal apps by Mimily</span>
+    <h1 class="hero-title">あなたの日常を、<br><em class="accent-soft">やさしく</em>する場所。</h1>
+    <p class="hero-sub">
+      Minit がつくる小さなアプリたち。<br>
+      使いやすさと、ほっとする気持ちを大切に。
+    </p>
+  </div>
+</section>
+
+<!-- 波形セパレータ -->
+<div class="wave" aria-hidden="true">
+  <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C360,48 1080,0 1440,24 L1440,48 L0,48 Z" fill="#f7ede0"/>
+  </svg>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<section class="about-section">
+  <div class="wrap">
+    <p class="section-label">about</p>
+    <p class="about-text">
+      <strong>Minit</strong> は、個人開発者によるアプリスタジオです。<br>
+      これがあったらいいな、限界でも何かやった気になりたい…を出発点に、<br>
+      シンプルで心地よいツールをひとつひとつ手作りしています。
+    </p>
+  </div>
+</section>
+
+<!-- 波形セパレータ（逆） -->
+<div class="wave" aria-hidden="true" style="background:#f7ede0;">
+  <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,24 C360,0 1080,48 1440,24 L1440,0 L0,0 Z" fill="#fdf6ee"/>
+  </svg>
+</div>
+
+<!-- ══ APPS ══ -->
+<section class="apps-section">
+  <div class="wrap">
+    <h2 class="section-heading">Apps</h2>
+
+    <div class="apps-grid">
+
+      <!-- CozyPost -->
+      <article class="app-card" data-animate>
+        <div class="card-accent cozy"></div>
+        <div class="card-body">
+          <div class="card-icon">🌿</div>
+          <h3 class="card-name">CozyPost</h3>
+          <p class="card-name-sub">コージーポスト</p>
+          <p class="card-desc">
+            思考を気軽に置いておける、やさしいメモ PWA。<br>
+            書いたら消える、消したくなければ残せる。<br>
+            頭の中をそっと整理するための小さな場所。
+          </p>
+          <div class="card-tags">
+            <span class="tag green">PWA</span>
+            <span class="tag green">メモ</span>
+            <span class="tag">オフライン対応</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://mimitday.github.io/cozypost/" target="_blank" rel="noopener" class="btn-visit green">
+            アプリを開く <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MinitStretch -->
+      <article class="app-card" data-animate>
+        <div class="card-accent stretch"></div>
+        <div class="card-body">
+          <div class="card-icon">🔥</div>
+          <h3 class="card-name">MinitStretch</h3>
+          <p class="card-name-sub">限界ストレッチ</p>
+          <p class="card-desc">
+            長時間座りっぱなしの体を、数分だけゆるめるための低刺激ストレッチタイマー。<br>
+            「今日はこれだけでOK」を前提に、<br>
+            限界状態でも使えるやさしいリセット体験を目指しました。
+          </p>
+          <div class="card-tags">
+            <span class="tag terra">ストレッチ</span>
+            <span class="tag terra">疲労ケア</span>
+            <span class="tag">低刺激UX</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://mimitday.github.io/minitstretch/" target="_blank" rel="noopener" class="btn-visit terra">
+            アプリを開く <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 波形セパレータ -->
+<div class="wave" aria-hidden="true">
+  <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,28 C480,56 960,0 1440,28 L1440,56 L0,56 Z" fill="#2e2620"/>
+  </svg>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-brand">Minit</p>
+        <p class="footer-tagline">小さなアプリスタジオ</p>
+      </div>
+      <nav class="footer-links" aria-label="フッターナビ">
+        <a href="https://mimitday.github.io/cozypost/" target="_blank" rel="noopener" class="footer-link">
+          🌿 CozyPost
+        </a>
+        <a href="https://mimitday.github.io/minitstretch/" target="_blank" rel="noopener" class="footer-link">
+          🔥 MinitStretch
+        </a>
+        <a href="https://mimitday.github.io/cozypost/privacy.html" target="_blank" rel="noopener" class="footer-link">
+          📄 プライバシーポリシー
+        </a>
+        <a href="https://forms.gle/qpzK8fobsCCJGdVa9" target="_blank" rel="noopener" class="footer-link">
+          ✉️ お問い合わせ
+        </a>
+      </nav>
+    </div>
+    <p class="footer-bottom">Minit by Mimily</p>
+  </div>
+</footer>
+
+<script>
+  // カードのフェードイン（Intersection Observer）
+  const cards = document.querySelectorAll('[data-animate]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(c => observer.observe(c));
+</script>
+
+</body>
+</html>
