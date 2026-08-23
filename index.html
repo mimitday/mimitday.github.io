@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- Mimily analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Y1QD7RYSJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7Y1QD7RYSJ', { site_id: 'mimitday_portal' });
+  </script>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4201053587019455"
      crossorigin="anonymous"></script>
@@ -523,6 +531,17 @@
     });
   }, { threshold: 0.15 });
   cards.forEach(c => observer.observe(c));
+
+  document.addEventListener('click', function(event) {
+    const link = event.target.closest('a.btn-visit');
+    if (!link) return;
+    const card = link.closest('.app-card');
+    const name = card ? card.querySelector('.card-name') : null;
+    gtag('event', 'portal_app_click', {
+      app_name: name ? name.textContent.trim() : 'unknown',
+      link_url: link.href
+    });
+  });
 </script>
 
 </body>

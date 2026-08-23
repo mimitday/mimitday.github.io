@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Mimily analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Y1QD7RYSJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7Y1QD7RYSJ', { site_id: 'mimily_global_portal' });
+  </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mimily Apps Global - Small tools for creators</title>
@@ -112,5 +120,16 @@ h1{max-width:10.2em;font-size:clamp(52px,8.5vw,96px);line-height:.9;color:var(--
   </section>
 </main>
 <footer class="footer"><span>Mimily Apps Global</span><span>PublishNow / EasyReply / SchedulEX / Minitapp</span></footer>
+<script>
+document.addEventListener('click', function(event) {
+  const link = event.target.closest('a.app, a.btn[href^="http"]');
+  if (!link) return;
+  const name = link.querySelector('h3');
+  gtag('event', 'portal_app_click', {
+    app_name: name ? name.textContent.trim() : link.textContent.trim(),
+    link_url: link.href
+  });
+});
+</script>
 </body>
 </html>
